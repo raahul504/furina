@@ -1,10 +1,9 @@
 import subprocess
 import re
 import os
-import platform
 
 def start_cloudflare_tunnel():
-    # Skip if running on Render
+    # Skip tunnel if running on Render
     if os.environ.get("RENDER", "False") == "True":
         print("🔒 Skipping tunnel start — running on Render.")
         return
@@ -12,23 +11,17 @@ def start_cloudflare_tunnel():
     try:
         print("🚀 Starting cloudflared tunnel...")
 
-        # Determine command based on OS
-        if platform.system() == "Windows":
-            cloudflared_path = r"C:\Program Files (x86)\cloudflared\cloudflared.exe"
-        else:
-            cloudflared_path = "cloudflared"  # Assumes it's in PATH
-
-        # Start the cloudflared tunnel
+        # Use system-installed cloudflared
         process = subprocess.Popen(
-            [cloudflared_path, "tunnel", "--url", "http://localhost:11434"],
+            ["cloudflared", "tunnel", "--url", "http://localhost:11434"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             universal_newlines=True
         )
 
-        # Read output line-by-line to find the tunnel URL
+        # Read and extract the tunnel URL
         for line in process.stdout:
-            print(line.strip())  # Optional: for logging/debugging
+            print(line.strip())
 
             match = re.search(r"https://[a-zA-Z0-9\-]+\.trycloudflare\.com", line)
             if match:
