@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Furina Companion</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="{{ url_for('counselling') }}">Counselling</a>
+        <a href="{{ url_for('breathe') }}">Breathe</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+    </div>
+
+    <h1>FURINA</h1>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                Hello! I'm Furina, your mental health companion. How can I help you today?
+                <button class="speech-button" onclick="speakText(this.parentNode.textContent)">🔊</button>
+            </div>
+        </div>
+
+        <!-- Input Field & Buttons -->
+        <div class="input-area">
+            <textarea id="user-input" placeholder="Type your message here..." rows="2"></textarea>
+            <button id="mic-button">🎤</button>
+            <button id="send-button">>></button>
+        </div>
+    </div>
+
+    <!-- Text-to-Speech Toggle -->
+    <div id="tts-toggle">
+        <input type="checkbox" id="auto-tts" /> 
+        <label for="auto-tts">Auto Speak</label>
+    </div>
+
+    <!-- Status Display -->
+    <div class="status" id="status"></div>
+    <script src="static/script.js"></script>
+</body>
+</html>

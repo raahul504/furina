@@ -1,0 +1,379 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    background-image: url("background3.jpg"); /* Path to background image */
+    background-size: cover; /* Make the image cover the entire viewport */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keep it fixed when scrolling */
+    /*backdrop-filter: blur(0px); Adjust the blur strength */
+}
+
+/* Title Styling */
+h1 {
+    top: 7px;
+    position: absolute;
+    left: 0;
+    margin-left: 25px;
+    color: rgb(243, 212, 252);
+}
+
+/* Navigation Bar */
+.navbar {
+    position: absolute;
+    right: 0;
+    top: 9px;
+    display: flex;
+    background: none;
+    padding: 10px 0;
+    margin-right: 20px;
+}
+
+/* Navigation Links */
+.navbar a {
+    color: rgb(253, 253, 253);
+    text-decoration: none;
+    font-size: 20px;
+    margin-left: 20px;
+    padding: 10px 15px;
+    transition: color 0.3s;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Added text shadow */
+}
+
+.navbar a:hover {
+    color: #e49c4b;
+}
+
+.counselling-description {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    max-width: 100%;
+    margin: 140px auto 100px; /* Reduced bottom margin */
+    margin-right: 0px;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: #fffcf4;
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat Container */
+.chat-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 320px;
+    max-width: 685px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 180px;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* Translucent Glass Effect */
+    background: rgba(255, 255, 255, 0.1); /* Light white background with transparency */
+    backdrop-filter: blur(10px); /* Blur effect for glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari support */
+    
+    /* Glossy Reflection */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    padding: 15px;
+
+    /*To make the transition smooth when resizing or changing themes, add: */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Chat Messages */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* Message Styling */
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    position: relative;
+}
+
+/* User Message */
+.user-message {
+    background-color: #fffcf4;
+    margin-left: auto;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Added drop shadow */
+}
+
+/* Bot Message */
+.bot-message {
+    background-color: #f9e6fc;
+    margin-right: auto;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Added drop shadow */
+}
+
+/* Speech Button */
+.speech-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: transparent;
+    border: none;
+    color: #665;
+    cursor: pointer;
+    padding: 2px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.speech-button:hover {
+    opacity: 1;
+}
+
+/* Input Area */
+.input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+/* User Input */
+#user-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+
+/* Button Styling */
+button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Microphone Button */
+#mic-button {
+    background-color: #75b8ee;
+    border-radius: 10px;
+}
+
+#mic-button:hover {
+    background-color: #acc4d7;
+}
+
+#mic-button.recording {
+    background-color: #f05353;
+}
+
+/* TTS Toggle */
+#tts-toggle {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgb(239, 239, 239);
+    margin-left: 180px;
+}
+
+/* Status Display */
+.status {
+    text-align: center;
+    color: #667;
+    margin-top: 10px;
+}
+
+.therapist-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 40px; /* Increased space between columns */
+    width: 100%;
+    max-width:100%;
+    padding: 0 0px;
+    justify-content: center;
+    margin-top: 90px;
+}
+
+.therapist {
+    width: 95%; /* Reduced width */
+    max-height: 350px;
+    max-width: 400px; /* Smaller block */
+    padding: 15px; /* Reduced padding */
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fffcf4;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.therapist img {
+    width: 100px; /* Slightly smaller image */
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+/* Responsive: Switch to a single column on smaller screens */
+@media (max-width: 768px) {
+    .therapist-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* About Page Styles */
+.about-header {
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    font-size: 36px;
+    color: rgb(243, 212, 252);
+    font-weight: bold;
+}
+
+.about-container {
+    max-width: 800px;
+    margin: 80px auto 40px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.3); /* Darkened the container */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    position: relative;
+}
+
+.about-container h1 {
+    color: rgb(243, 212, 252);
+    font-size: 32px;
+    position: absolute;
+    top: 50px;
+    left: 25px;
+    margin: 0;
+}
+
+.about-container p {
+    font-size: 18px;
+    color: #ddd;
+    line-height: 1.4;
+    margin-top: 50px;
+    margin-bottom: 15px;
+}
+
+/* Center only the Contact Us section */
+.contact-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Add text shadow only to specific paragraphs */
+.about-container p:first-of-type, 
+.about-container p:nth-of-type(2) {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.about-container a {
+    color: #e49c4b;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.about-container a:hover {
+    color: #ffcc80;
+}
+
+.about-container h2 {
+    margin-top: 20px;
+    color: #f9e6fc;
+    text-align: center;
+}
+
+.about-container img {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Registration Form Container 
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+}*/
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.3); /* Slightly more opaque */
+    padding: 25px;
+    border-radius: 12px;
+    backdrop-filter: blur(15px); /* Increased blur effect */
+    max-width: 420px;
+    margin: 50px auto; /* Adds space above */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+
+/*label {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #e4e3e3;
+}*/
+
+input {
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    outline: none;
+    transition: border 0.2s ease-in-out;
+}
+
+input:focus {
+    border: 1px solid #007BFF; /* Blue border on focus */
+    box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+}
+.register-btn {
+    padding: 8px 14px; /* Smaller button */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin: 15px auto; /* Center the button */
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease-in-out;
+    display: block; /* Ensures centering */
+}
+
+.register-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

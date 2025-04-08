@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counselling</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('counselling') }}">Counselling</a>
+        <a href="{{ url_for('breathe') }}">Breathe</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+    </div>
+
+    <h1>Counselling Services</h1>
+
+    <p class="counselling-description">
+        This section provides contact details of professional therapists who specialize in different mental health areas. 
+        If you need guidance, feel free to reach out to a therapist that suits your needs.<br><br><br>
+        <button onclick="window.location.href='/register'">Register as a Therapist</button>
+        <button onclick="unregisterTherapist()">Unregister</button>
+    </p>
+
+    <div class="therapist-list" id="therapist-list">
+        <!-- Therapists will be loaded here dynamically -->
+    </div>
+
+    <script>
+        async function fetchTherapists() {
+            try {
+                const response = await fetch("/get_therapists");
+                const therapists = await response.json();
+                const therapistList = document.getElementById("therapist-list");
+                therapistList.innerHTML = ""; // Clear previous entries
+
+                therapists.forEach(therapist => {
+                     // Set default profile image
+                let photoUrl = "static/default-profile.jpg"; 
+
+                // If therapist has an actual photo, use it instead
+                if (therapist.photo_url && therapist.photo_url.trim() !== "") {
+                    photoUrl = therapist.photo_url;
+                }
+                    therapistList.innerHTML += `
+                        <div class="therapist">
+                            <img src="${photoUrl}" alt="Therapist Photo" class="therapist-photo" 
+                             onerror="this.onerror=null; this.src='static/default-profile.jpg';">
+                            <h2>${therapist.name}</h2>
+                            <p><strong>Specialization:</strong> ${therapist.specialization}</p>
+                            <p><strong>Languages:</strong> ${therapist.languages}</p>
+                            <p><strong>Experience:</strong> ${therapist.experience} years</p>
+                            <p><strong>Phone:</strong> ${therapist.phone}</p>
+                            <p><strong>Contact:</strong> ${therapist.email}</p>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error fetching therapists:", error);
+            }
+        }
+
+        fetchTherapists();
+
+        async function unregisterTherapist() {
+            const email = prompt("Enter your email to unregister:");
+            if (!email) return;
+
+            try {
+                const response = await fetch("/unregister", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email })
+                });
+
+                const result = await response.json();
+                alert(result.message || result.error);
+                if (response.ok) window.location.reload();
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>

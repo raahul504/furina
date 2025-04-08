@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathing Exercise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url("static/background3.jpg");
+            background-color: #222;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .navbar {
+            position: absolute;
+            right: 0;
+            top: 9px;
+            display: flex;
+            background: none;
+            padding: 10px 0;
+            margin-right: 20px;
+        }
+        .navbar a {
+            color: rgb(253, 253, 253);
+            text-decoration: none;
+            font-size: 20px;
+            margin-left: 20px;
+            padding: 10px 15px;
+            transition: color 0.3s;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .navbar a:hover {
+            color: #e49c4b;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .breathing-circle {
+            width: 120px;
+            height: 120px;
+            background-color: #faf4e3;
+            border-radius: 50%;
+            position: relative;
+            margin: 40px auto;
+            transform: scale(0.8);
+            transition: transform 5s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); font-size: 24px; }
+            50% { transform: scale(1.2); font-size: 32px; }
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background: #faf4e3;
+            color: rgb(27, 16, 0);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #fef0c8;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('counselling') }}">Counselling</a>
+        <a href="{{ url_for('breathe') }}">Breathe</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+    </div>
+    <div class="container">
+        <h1>Breathing Exercise</h1>
+        <p>Follow the sphere's movement: Inhale as it expands, exhale as it contracts.</p>
+        <div class="breathing-circle" id="breathingCircle">
+            <span id="timer">--</span>
+        </div>
+        <div class="controls">
+            <label for="timeSelect">Set Duration: </label>
+            <select id="timeSelect">
+                <option value="15">15 sec</option>
+                <option value="30">30 sec</option>
+                <option value="45">45 sec</option>
+                
+                <option value="180">3 min</option>
+                <option value="300">5 min</option>
+                <option value="600">10 min</option>
+                <option value="900">15 min</option>
+            </select>
+            <button onclick="startBreathing()">Start</button>
+            <button id="pauseBtn" onclick="pauseBreathing()">Pause</button>
+            <button onclick="resetBreathing()">Stop</button>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+        let remainingTime = 0;
+        let isPaused = false;
+        let isAnimating = false;
+        const breathingCircle = document.getElementById("breathingCircle");
+        const pauseButton = document.getElementById("pauseBtn");
+        const timerText = document.getElementById("timer");
+
+        function startBreathing() {
+            let duration = parseInt(document.getElementById("timeSelect").value);
+            remainingTime = duration;
+            isPaused = false;
+            pauseButton.innerText = "Pause";
+            updateTimer();
+            
+            breathingCircle.style.animation = "breathe 10s infinite ease-in-out";
+            breathingCircle.style.animationPlayState = "running";
+            isAnimating = true;
+
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                if (!isPaused && remainingTime > 0) {
+                    remainingTime--;
+                    updateTimer();
+                } else if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    breathingCircle.style.animation = "none";
+                    breathingCircle.style.transform = "scale(0.8)";
+                    isAnimating = false;
+                    timerText.innerText = "Done!";
+                }
+            }, 1000);
+        }
+
+        function pauseBreathing() {
+            if (isAnimating) {
+                if (isPaused) {
+                    breathingCircle.style.animationPlayState = "running";
+                    pauseButton.innerText = "Pause";
+                } else {
+                    breathingCircle.style.animationPlayState = "paused";
+                    pauseButton.innerText = "Resume";
+                }
+                isPaused = !isPaused;
+            }
+        }
+
+        function resetBreathing() {
+            clearInterval(countdownInterval);
+            timerText.innerText = "";
+            remainingTime = 0;
+            breathingCircle.style.animation = "none";
+            breathingCircle.offsetHeight;
+            breathingCircle.style.transform = "scale(0.8)";
+            isAnimating = false;
+            pauseButton.innerText = "Pause";
+        }
+
+        function updateTimer() {
+            timerText.innerText = remainingTime;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Therapist Registration</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('counselling') }}">Counselling</a>
+        <a href="{{ url_for('breathe') }}">Breathe</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+    </div>
+
+    <h1>Register as a Therapist</h1>
+    
+    <form id="registration-form" enctype="multipart/form-data">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" required>
+        
+        <label for="specialization">Specialization (comma-separated):</label>
+        <input type="text" id="specialization" name="specialization" required>
+        
+        <label for="experience">Years of Experience:</label>
+        <input type="number" id="experience" name="experience" required>
+        
+        <label for="license_number">License Number:</label>
+        <input type="text" id="license_number" name="license_number" required>
+        
+        <label for="languages">Languages Spoken (comma-separated):</label>
+        <input type="text" id="languages" name="languages" required>
+        
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+        
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.getElementById("registration-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("phone", document.getElementById("phone").value);
+            formData.append("specialization", document.getElementById("specialization").value);
+            formData.append("experience", document.getElementById("experience").value);
+            formData.append("license_number", document.getElementById("license_number").value);
+            formData.append("languages", document.getElementById("languages").value);
+            
+            const photoInput = document.getElementById("photo");
+            if (photoInput.files.length > 0) {
+                formData.append("photo", photoInput.files[0]);
+            }
+
+            try {
+                const response = await fetch("/register", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                window.location.href = "/counselling"; 
+            } catch (error) {
+                console.error("Error registering therapist:", error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
