@@ -5,7 +5,7 @@ def start_cloudflare_tunnel():
     try:
         # Start the cloudflared tunnel
         process = subprocess.Popen(
-            ["cloudflared", "tunnel", "--url", "http://localhost:11434"],
+            ["C:\Program Files (x86)\cloudflared\cloudflared.exe", "tunnel", "--url", "http://localhost:11434"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             universal_newlines=True
