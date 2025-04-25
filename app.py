@@ -143,7 +143,7 @@ def generate():
     try:
         # Prepare the request for Ollama API
         payload = {
-            "model": "llama3.2",
+            "model": "furina1.4",
             "messages": [
                 {"role": "user", "content": prompt}
             ],
