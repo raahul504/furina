@@ -8,9 +8,6 @@ import datetime
 import os
 import subprocess
 
-# Run the tunnel starter script before anything else
-subprocess.run(["python", "start_tunnel.py"])
-
 # Load Firebase credentials
 firebase_credentials = json.loads(os.environ["FIREBASE_CREDENTIALS"])
 cred = credentials.Certificate(firebase_credentials)
@@ -22,16 +19,8 @@ bucket = storage.bucket()
 
 app = Flask(__name__)
 
-# Load LLM API URL from file (written by tunnel starter script)
-def load_llm_api_url():
-    try:
-        with open("tunnel_url.txt", "r") as f:
-            return f.read().strip() + "/api/chat"
-    except FileNotFoundError:
-        return None
-
 # Configuration for your locally running LLM
-LLM_API_URL = load_llm_api_url()  # Ollama API endpoint through cloudlfare tunnel
+LLM_API_URL = "https://ra.furina-tunnel.space/api/chat" # Ollama API endpoint through cloudlfare tunnel
 LLM_API_KEY = None  # Add your API key if required
 
 @app.route("/")

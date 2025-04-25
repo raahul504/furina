@@ -173,7 +173,7 @@ function speakText(text) {
         return; // Exit if we were already speaking (this makes the button toggle)
     }
 
-    text = text.replace('🔊', '').replace('⏹️', '').trim();
+    text = text.replace(/[🔊⏹️*_`~]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Set the selected voice if available
@@ -228,21 +228,64 @@ document.getElementById('send-button').addEventListener('click', function() {
     stopSpeaking();
 });
 
+// Stop speaking when the mic button is clicked
+document.getElementById('mic-button').addEventListener('click', function () {
+    stopSpeaking();
+});
+
+function splitIntoLines(text) {
+    const lines = text.split('\n');
+    const lineElements = [];
+
+    for (const line of lines) {
+        const trimmed = line.trim();
+
+        // If it starts with a number like "1. " or a bullet "* ", add a line break
+        if (/^\d+\.\s/.test(trimmed) || /^\*\s/.test(trimmed) || /^\•\s/.test(trimmed)) {
+            const div = document.createElement('div');
+            div.textContent = trimmed;
+            lineElements.push(div);
+        } else if (trimmed) {
+            const span = document.createElement('span');
+            span.textContent = trimmed;
+            lineElements.push(span);
+        }
+    }
+
+    return lineElements;
+}
+
 // Add Message to Chat
 function addMessage(content, isUser) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', isUser ? 'user-message' : 'bot-message');
-    messageDiv.textContent = content;
 
-    if (!isUser) {
+    if (isUser) {
+        messageDiv.textContent = content;
+    } else {
+        const wrapper = document.createElement('div');
+        wrapper.style.display = 'flex';
+        wrapper.style.alignItems = 'flex-start';
+        wrapper.style.gap = '8px';
+
+        // Line-formatted text container
+        const textContainer = document.createElement('div');
+        const lineElements = splitIntoLines(content);
+        lineElements.forEach(el => textContainer.appendChild(el));
+        wrapper.appendChild(textContainer);
+
+        // Speech button
         const speechButton = document.createElement('button');
         speechButton.classList.add('speech-button');
         speechButton.textContent = '🔊';
-        speechButton.onclick = function(){
+        speechButton.onclick = function () {
             speakText(content);
-    };
-        messageDiv.appendChild(speechButton);
+        };
+        wrapper.appendChild(speechButton);
 
+        messageDiv.appendChild(wrapper);
+
+        // Auto TTS
         if (autoTtsCheckbox.checked) {
             setTimeout(() => {
                 speakText(content);
@@ -283,6 +326,7 @@ sendButton.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
+        stopSpeaking();
         sendMessage();
     }
 });
@@ -296,3 +340,4 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 
 // Initialize voices immediately in case they're already loaded
 initVoices();
+
