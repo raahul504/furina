@@ -159,9 +159,9 @@ def generate():
     conversation_contexts[session_id].append(user_message)
     
     # Debug print before API call
-    '''print("\n=== FULL CONVERSATION HISTORY ===")
+    print("\n=== FULL CONVERSATION HISTORY ===")
     for i, msg in enumerate(conversation_contexts[session_id]):
-        print(f"{i}. {msg['role'].upper()}: {msg['content']}")'''
+        print(f"{i}. {msg['role'].upper()}: {msg['content']}")
     
     try:
         # Prepare the request for Ollama API
@@ -173,7 +173,7 @@ def generate():
             "stream": False
         }
         
-        # print("\n📤 Sending to LLM API:", json.dumps(payload, indent=2))
+        print("\n📤 Sending to LLM API:", json.dumps(payload, indent=2))
 
         headers = {
             "Content-Type": "application/json"
@@ -185,7 +185,7 @@ def generate():
         response = requests.post(LLM_API_URL, json=payload, headers=headers)
         response_data = response.json()
         
-        # print("\n📥 Received from LLM:", json.dumps(response_data, indent=2))
+        print("\n📥 Received from LLM:", json.dumps(response_data, indent=2))
 
         if response.status_code == 200:
             assistant_reply = response_data.get('message', {}).get('content', '').strip()
@@ -194,9 +194,9 @@ def generate():
             assistant_message = {"role": "assistant", "content": assistant_reply}
             conversation_contexts[session_id].append(assistant_message)
             
-            '''print("\n💾 Updated conversation context:")
+            print("\n💾 Updated conversation context:")
             for i, msg in enumerate(conversation_contexts[session_id]):
-                print(f"{i}. {msg['role'].upper()}: {msg['content']}")'''
+                print(f"{i}. {msg['role'].upper()}: {msg['content']}")
             
             return jsonify({
                 'response': assistant_reply,
