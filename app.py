@@ -7,6 +7,7 @@ import uuid
 import datetime
 import os
 import subprocess
+from collections import defaultdict
 
 # Load Firebase credentials
 firebase_credentials = json.loads(os.environ["FIREBASE_CREDENTIALS"])
@@ -22,6 +23,9 @@ app = Flask(__name__)
 # Configuration for your locally running LLM
 LLM_API_URL = "https://ra.furina-tunnel.space/api/chat" # Ollama API endpoint through cloudlfare tunnel
 LLM_API_KEY = None  # Add your API key if required
+
+# In-memory conversation storage
+conversation_contexts = defaultdict(list)  # {session_id: [messages]}
 
 @app.route("/")
 def home():
@@ -131,14 +135,33 @@ def get_therapists():
     
     return jsonify(therapists)
 
+# ===== Modified LLM Endpoint with Context =====
 @app.route('/api/generate', methods=['POST'])
 def generate():
     """Send request to your existing LLM and return the response."""
     data = request.json
     prompt = data.get('prompt', '')
+    session_id = data.get('session_id')
     
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
+    
+    # Session handling - more robust validation
+    if not session_id or session_id not in conversation_contexts:
+        session_id = str(uuid.uuid4())
+        conversation_contexts[session_id] = []
+        print(f"\n🔥 New session created: {session_id}")
+    else:
+        print(f"\n🔄 Continuing session: {session_id}")
+    
+    # Add user message to context
+    user_message = {"role": "user", "content": prompt}
+    conversation_contexts[session_id].append(user_message)
+    
+    # Debug print before API call
+    '''print("\n=== FULL CONVERSATION HISTORY ===")
+    for i, msg in enumerate(conversation_contexts[session_id]):
+        print(f"{i}. {msg['role'].upper()}: {msg['content']}")'''
     
     try:
         # Prepare the request for Ollama API
@@ -150,6 +173,8 @@ def generate():
             "stream": False
         }
         
+        # print("\n📤 Sending to LLM API:", json.dumps(payload, indent=2))
+
         headers = {
             "Content-Type": "application/json"
         }
@@ -158,20 +183,34 @@ def generate():
         
         # Send request to your locally running LLM
         response = requests.post(LLM_API_URL, json=payload, headers=headers)
+        response_data = response.json()
         
+        # print("\n📥 Received from LLM:", json.dumps(response_data, indent=2))
+
         if response.status_code == 200:
-            result = response.json()
-            generated_text = result.get('message', {}).get('content', '')
-            return jsonify({'response': generated_text.strip()})
+            assistant_reply = response_data.get('message', {}).get('content', '').strip()
+            
+            # Store assistant's response
+            assistant_message = {"role": "assistant", "content": assistant_reply}
+            conversation_contexts[session_id].append(assistant_message)
+            
+            '''print("\n💾 Updated conversation context:")
+            for i, msg in enumerate(conversation_contexts[session_id]):
+                print(f"{i}. {msg['role'].upper()}: {msg['content']}")'''
+            
+            return jsonify({
+                'response': assistant_reply,
+                'session_id': session_id  # Critical for frontend to send back
+            })
         else:
-            error_message = f"LLM API error: {response.status_code}"
-            try:
-                error_message += f" - {response.json().get('error', '')}"
-            except:
-                pass
-            return jsonify({'error': error_message}), 500
-    
+            error_msg = f"LLM API Error {response.status_code}"
+            if 'error' in response_data:
+                error_msg += f": {response_data['error']}"
+            print(f"❌ {error_msg}")
+            return jsonify({'error': error_msg}), 500
+            
     except Exception as e:
+        print(f"❌ Unexpected error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
