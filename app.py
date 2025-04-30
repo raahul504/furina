@@ -20,17 +20,16 @@ db = firestore.client()
 bucket = storage.bucket()
 
 # Redis configuration - adjust URL based on your Redis provider
-redis_url = os.environ.get("REDIS_URL")
+upstash_redis_url = os.environ.get("UPSTASH_REDIS_REST_URL")
 # Check if it's an Upstash REST URL and use appropriate client
-if redis_url and redis_url.startswith('https://'):
+if upstash_redis_url and upstash_redis_url.startswith('https://'):
     # Import the required library for Upstash
     from upstash_redis import Redis
-    upstash_url = os.environ.get("UPSTASH_REDIS_REST_URL")
-    upstash_token = os.environ.get("UPSTASH_REDIS_REST_TOKEN")
-    redis_client = Redis(url=upstash_url, token=upstash_token)
+    upstash_redis_token = os.environ.get("UPSTASH_REDIS_REST_TOKEN")
+    redis_client = Redis(url=upstash_redis_url, token=upstash_redis_token)
 else:
     # Standard Redis client for direct connections
-    redis_client = redis.from_url(redis_url or "redis://localhost:6379")
+    redis_client = redis.from_url(upstash_redis_url or "redis://localhost:6379")
 
 redis_ttl = 7200  # 2 hours in seconds
 
