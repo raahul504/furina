@@ -8,6 +8,7 @@ import datetime
 import os
 import subprocess
 from collections import defaultdict
+import redis
 
 # Load Firebase credentials
 firebase_credentials = json.loads(os.environ["FIREBASE_CREDENTIALS"])
@@ -18,14 +19,26 @@ firebase_admin.initialize_app(cred, {'storageBucket': os.environ["FIREBASE_STORA
 db = firestore.client()
 bucket = storage.bucket()
 
+# Redis configuration - adjust URL based on your Redis provider
+redis_url = os.environ.get("REDIS_URL")
+# Check if it's an Upstash REST URL and use appropriate client
+if redis_url and redis_url.startswith('https://'):
+    # Import the required library for Upstash
+    from upstash_redis import Redis
+    upstash_url = os.environ.get("UPSTASH_REDIS_REST_URL")
+    upstash_token = os.environ.get("UPSTASH_REDIS_REST_TOKEN")
+    redis_client = Redis(url=upstash_url, token=upstash_token)
+else:
+    # Standard Redis client for direct connections
+    redis_client = redis.from_url(redis_url or "redis://localhost:6379")
+
+redis_ttl = 7200  # 2 hours in seconds
+
 app = Flask(__name__)
 
 # Configuration for your locally running LLM
 LLM_API_URL = "https://ra.furina-tunnel.space/api/chat" # Ollama API endpoint through cloudlfare tunnel
 LLM_API_KEY = None  # Add your API key if required
-
-# In-memory conversation storage
-conversation_contexts = defaultdict(list)  # {session_id: [messages]}
 
 @app.route("/")
 def home():
@@ -135,6 +148,75 @@ def get_therapists():
     
     return jsonify(therapists)
 
+# Add this function to log Redis operations
+def log_redis_operation(operation, key, result=None):
+    print(f"REDIS {operation}: {key} => {result}")
+
+# Add these helper functions for Redis conversation management
+def get_conversation(session_id):
+    """Get conversation from Redis"""
+    key = f"conversation:{session_id}"
+    data = redis_client.get(key)
+    log_redis_operation("GET", key, "Found" if data else "Not found")
+    if data:
+        # Extend TTL on access
+        redis_client.expire(key, redis_ttl)
+        return json.loads(data)
+    return []
+
+def save_conversation(session_id, conversation):
+    """Save conversation to Redis with TTL"""
+    redis_client.setex(
+        f"conversation:{session_id}", 
+        redis_ttl,  # 30-minute TTL
+        json.dumps(conversation)
+    )
+
+def session_exists(session_id):
+    """Check if session exists in Redis"""
+    return bool(redis_client.exists(f"conversation:{session_id}"))
+
+def safe_redis_operation(operation_func, *args, **kwargs):
+    """Execute Redis operation with error handling"""
+    try:
+        return operation_func(*args, **kwargs)
+    except Exception as e:
+        print(f"Redis error: {str(e)}")
+        # Return appropriate fallback value
+        return None
+
+@app.route('/api/system_check', methods=['GET'])
+def system_check():
+    """Check if Redis connection is working"""
+    try:
+        # Set a test value
+        test_key = "system:check"
+        test_value = f"System check at {datetime.datetime.now()}"
+        redis_client.setex(test_key, 60, test_value)
+        
+        # Retrieve the value
+        retrieved = redis_client.get(test_key)
+        
+        if retrieved == test_value:
+            return jsonify({
+                "status": "ok", 
+                "redis": "connected",
+                "message": "System is operational"
+            })
+        else:
+            return jsonify({
+                "status": "error",
+                "redis": "value mismatch",
+                "message": "Redis connection exists but values don't match"
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "redis": "disconnected",
+            "message": str(e)
+        }), 500
+
 # ===== Modified LLM Endpoint with Context =====
 @app.route('/api/generate', methods=['POST'])
 def generate():
@@ -147,29 +229,29 @@ def generate():
         return jsonify({'error': 'No prompt provided'}), 400
     
     # Session handling - more robust validation
-    if not session_id or session_id not in conversation_contexts:
+    if not session_id:
         session_id = str(uuid.uuid4())
-        conversation_contexts[session_id] = []
         print(f"\n🔥 New session created: {session_id}")
-    else:
-        print(f"\n🔄 Continuing session: {session_id}")
+    '''else:
+        print(f"\n🔄 Continuing session: {session_id}")'''
     
+    # Get conversation history from Redis
+    conversation = get_conversation(session_id)
+
     # Add user message to context
     user_message = {"role": "user", "content": prompt}
-    conversation_contexts[session_id].append(user_message)
+    conversation.append(user_message)
     
     # Debug print before API call
     print("\n=== FULL CONVERSATION HISTORY ===")
-    for i, msg in enumerate(conversation_contexts[session_id]):
+    for i, msg in enumerate(conversation):
         print(f"{i}. {msg['role'].upper()}: {msg['content']}")
     
     try:
         # Prepare the request for Ollama API
         payload = {
             "model": "furina1.4",
-            "messages": [
-                {"role": "user", "content": prompt}
-            ],
+            "messages": conversation,
             "stream": False
         }
         
@@ -192,10 +274,12 @@ def generate():
             
             # Store assistant's response
             assistant_message = {"role": "assistant", "content": assistant_reply}
-            conversation_contexts[session_id].append(assistant_message)
+            conversation.append(assistant_message)
+
+            save_conversation(session_id, conversation)
             
             print("\n💾 Updated conversation context:")
-            for i, msg in enumerate(conversation_contexts[session_id]):
+            for i, msg in enumerate(conversation):
                 print(f"{i}. {msg['role'].upper()}: {msg['content']}")
             
             return jsonify({
@@ -212,6 +296,42 @@ def generate():
     except Exception as e:
         print(f"❌ Unexpected error: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+# Session Verification Endpoint for TESTING
+@app.route('/api/verify_session', methods=['POST'])
+def verify_session():
+    data = request.json
+    session_id = data.get('session_id')
+    
+    if not session_id:
+        return jsonify({'valid': False}), 400
+    
+    # Check if session exists in Redis
+    conversation_json = redis_client.get(f"conversation:{session_id}")
+    
+    if conversation_json:
+        # Session exists, reset TTL
+        redis_client.expire(f"conversation:{session_id}", redis_ttl)
+        return jsonify({'valid': True})
+    else:
+        # Session not found
+        return jsonify({'valid': False})
+    
+# In app.py:
+@app.route('/api/heartbeat', methods=['POST'])
+def heartbeat():
+    """Keep session alive"""
+    data = request.json
+    session_id = data.get('session_id')
+    
+    if session_id:
+        key = f"conversation:{session_id}"
+        if redis_client.exists(key):
+            # Extend TTL
+            redis_client.expire(key, redis_ttl)
+            return jsonify({"status": "ok"})
+    
+    return jsonify({"status": "expired"}), 404
 
 if __name__ == '__main__':
     #print("Starting web server on http://localhost:5000")

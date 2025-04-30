@@ -353,6 +353,41 @@ function addMessage(content, isUser) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Add session verification function
+async function verifySession(sessionId) {
+    try {
+        const response = await fetch('/api/verify_session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: sessionId })
+        });
+        
+        const data = await response.json();
+        return data.valid;
+    } catch (error) {
+        console.error('Session verification error:', error);
+        return false;
+    }
+}
+
+// Optional: Load session from sessionStorage on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    const savedSessionId = sessionStorage.getItem('llm_session_id');
+    if (savedSessionId) {
+        // Verify session exists on server
+        const isValid = await verifySession(savedSessionId);
+        if (isValid) {
+            currentSessionId = savedSessionId;
+            console.log('Resumed previous session:', currentSessionId);
+        } else {
+            // Session not found on server (expired or server restarted)
+            sessionStorage.removeItem('llm_session_id');
+            currentSessionId = null;
+            console.log('Previous session not found on server');
+        }
+    }
+});
+
 // Send Message to Backend
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -389,8 +424,8 @@ async function sendMessage() {
         if (data.session_id) {
             currentSessionId = data.session_id;
             
-            // Optional: Store in localStorage to persist across page refreshes
-            localStorage.setItem('llm_session_id', data.session_id);
+            // Optional: Store in sessionStorage to persist across page refreshes
+            sessionStorage.setItem('llm_session_id', data.session_id);
         }
 
         addMessage(data.response, false);
@@ -399,15 +434,6 @@ async function sendMessage() {
         console.error('API Error:', error);
     }
 }
-
-// Optional: Load session from localStorage on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const savedSessionId = localStorage.getItem('llm_session_id');
-    if (savedSessionId) {
-        currentSessionId = savedSessionId;
-        console.log('Resumed previous session:', currentSessionId);
-    }
-});
 
 // Event Listeners
 sendButton.addEventListener('click', sendMessage);
@@ -428,3 +454,17 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 
 // Initialize voices immediately in case they're already loaded
 initVoices();
+
+// In your frontend script.js:
+function sendHeartbeat() {
+    if (currentSessionId) {
+        fetch('/api/heartbeat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: currentSessionId })
+        });
+    }
+}
+
+// Send heartbeat every 5 minutes
+setInterval(sendHeartbeat, 300000);
