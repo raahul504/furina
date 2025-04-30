@@ -301,6 +301,9 @@ function hideEmergencyResources() {
     if (panel) panel.style.display = 'none';
 }
 
+// Add session ID tracking
+let currentSessionId = null;
+
 // Add Message to Chat
 function addMessage(content, isUser) {
     const messageDiv = document.createElement('div');
@@ -350,30 +353,6 @@ function addMessage(content, isUser) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Add session ID tracking
-let currentSessionId = null;
-
-function initializeSession() {
-    // Detect if this is a new tab (not refresh)
-    const isNewTab = performance.getEntriesByType("navigation")[0].type === "navigate";
-    
-    if (isNewTab) {
-        localStorage.removeItem('llm_session_id');
-        console.log("New tab detected - cleared previous session");
-    }
-    
-    currentSessionId = localStorage.getItem('llm_session_id') || generateNewSessionId();
-}
-
-document.addEventListener('DOMContentLoaded', initializeSession);
-
-function generateNewSessionId() {
-    const newId = crypto.randomUUID(); // Modern browser API
-    localStorage.setItem('llm_session_id', newId);
-    console.log('New session ID:', newId);
-    return newId;
-}
-
 // Send Message to Backend
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -381,11 +360,6 @@ async function sendMessage() {
 
     addMessage(message, true);
     userInput.value = '';
-
-    // Initialize session if not exists
-    if (!currentSessionId) {
-        initializeSession();
-    }
 
     // Safety check - intercept before sending to LLM
     if (checkForSafetyConcerns(message)) {
@@ -406,28 +380,20 @@ async function sendMessage() {
         const response = await fetch('/api/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',  // Crucial for cookies
             body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
         // Store the session ID for subsequent requests
-        if (data.session_id && data.session_id !== currentSessionId) {
+        if (data.session_id) {
             currentSessionId = data.session_id;
             
             // Optional: Store in localStorage to persist across page refreshes
-            localStorage.setItem('llm_session_id', currentSessionId);
+            localStorage.setItem('llm_session_id', data.session_id);
         }
 
         addMessage(data.response, false);
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeSession();
-            console.log("Chat initialized with session:", currentSessionId);
-        });
-
     } catch (error) {
         addMessage(`Error: ${error.message}`, false);
         console.error('API Error:', error);

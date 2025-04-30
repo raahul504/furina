@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
 import requests
 import json
 import firebase_admin
@@ -20,17 +19,6 @@ db = firestore.client()
 bucket = storage.bucket()
 
 app = Flask(__name__)
-
-app.config.update(
-    SESSION_COOKIE_SECURE=True,    # Send cookies only over HTTPS
-    SESSION_COOKIE_SAMESITE='Lax', # Basic CSRF protection
-    PERMANENT_SESSION_LIFETIME=datetime.timedelta(hours=5)  # Auto-expire
-)
-
-CORS(app, supports_credentials=True, origins=[
-    "https://your-render-url.onrender.com",
-    "http://localhost:5000"  # For local testing
-])
 
 # Configuration for your locally running LLM
 LLM_API_URL = "https://ra.furina-tunnel.space/api/chat" # Ollama API endpoint through cloudlfare tunnel
@@ -155,9 +143,6 @@ def generate():
     prompt = data.get('prompt', '')
     session_id = data.get('session_id')
     
-    if not session_id or not prompt:
-        return jsonify({'error': 'Missing session_id or prompt'}), 400
-
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
     
