@@ -203,6 +203,11 @@ button:active {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+#regunreg-button {
+    background: linear-gradient(135deg, #c5c4c4, #989d98);
+    font-weight: bold;
+}
+
 /* Microphone Button */
 #mic-button {
     background: linear-gradient(135deg, #75b8ee, #6a9ed8);

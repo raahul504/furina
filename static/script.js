@@ -72,7 +72,7 @@ function initVoices() {
     }
 }
 
-// Create voice selector
+/* Create voice selector (old one, does not work with new UI)
 function createVoiceSelector() {
     const ttsContainer = document.getElementById('tts-toggle');
     
@@ -118,6 +118,42 @@ function createVoiceSelector() {
     
     // Add container to TTS container
     ttsContainer.appendChild(selectorContainer);
+}*/
+
+// Create voice selector for new UI
+function createVoiceSelector() {
+    const ttsContainer = document.getElementById('voice-settings');
+    
+    // Create label
+    const label = document.createElement('label');
+    label.textContent = 'Voice: ';
+    label.style.marginRight = '5px';
+    
+    // Create select element
+    const selector = document.createElement('select');
+    selector.id = 'voice-selector';
+    
+    // Add voices to selector
+    voices.forEach(voice => {
+        const option = document.createElement('option');
+        option.value = voice.name;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        selector.appendChild(option);
+    });
+    
+    // Set initial value if selected voice exists
+    if (selectedVoice) {
+        selector.value = selectedVoice.name;
+    }
+    
+    // Add change event listener
+    selector.addEventListener('change', function() {
+        selectedVoice = voices.find(voice => voice.name === this.value);
+    });
+    
+    // Add elements to container
+    ttsContainer.appendChild(label);
+    ttsContainer.appendChild(selector);
 }
 
 // Toggle Recording

@@ -9,7 +9,15 @@
     <!-- Night Mode Support -->
     <link rel="stylesheet" href="static/night-mode.css">
     <script src="static/night-mode.js" defer></script> <!--night mode glitch solution pasted in night-mode.js-->
-    
+    <script>
+        // Apply night mode preference immediately
+        (function() {
+            const isDarkMode = localStorage.getItem('nightMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('preload-night-mode');
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->

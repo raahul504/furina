@@ -94,10 +94,10 @@ function updateNightModeButton(isDarkMode) {
     if (!button) return;
     
     if (isDarkMode) {
-        button.innerHTML = '☀️ Light Mode';  // Sun emoji with text for switching to light mode
+        button.innerHTML = '☀️';  // Sun emoji with text for switching to light mode
         button.title = 'Switch to Light Mode';
     } else {
-        button.innerHTML = '🌙 Dark Mode';  // Moon emoji with text for switching to dark mode
+        button.innerHTML = '🌙';  // Moon emoji with text for switching to dark mode
         button.title = 'Switch to Night Mode';
     }
 }
@@ -115,11 +115,3 @@ function fixMusicButtonStyles() {
         musicBtn.classList.add('nav-fix');
     }
 }
-
-// Apply night mode preference immediately
-(function() {
-    const isDarkMode = localStorage.getItem('nightMode') === 'true';
-    if (isDarkMode) {
-        document.documentElement.classList.add('preload-night-mode');
-    }
-})();
