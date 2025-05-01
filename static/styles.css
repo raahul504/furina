@@ -173,7 +173,7 @@ h1 {
 }
 
 /* Button Styling */
-button {
+.input-area button {
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -193,19 +193,14 @@ button {
     padding: 0;
 }
 
-button:hover {
+.input-area button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
 }
 
-button:active {
+.input-area button:active {
     transform: translateY(1px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-#regunreg-button {
-    background: linear-gradient(135deg, #c5c4c4, #989d98);
-    font-weight: bold;
 }
 
 /* Microphone Button */
