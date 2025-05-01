@@ -59,6 +59,18 @@ def about():
 def register_page():
     return render_template('register.html')
 
+@app.route('/get-music-files')
+def get_music_files():
+    blobs = bucket.list_blobs(prefix='music files/')  # get files from audio/ folder
+    files = []
+    for blob in blobs:
+        if not blob.name.endswith('/'):  # skip folder reference
+            files.append({
+                'title': blob.name.split('/')[-1].rsplit('.', 1)[0].replace('-', ' ').title(),
+                'file': blob.generate_signed_url(version="v4", expiration=3600)  # 1 hour expiry
+            })
+    return jsonify(files)
+
 @app.route('/register', methods=['POST'])
 def register():
     name = request.form.get('name')
@@ -147,7 +159,7 @@ def get_therapists():
     
     return jsonify(therapists)
 
-# Add this function to log Redis operations
+# Add this function to log Redis operations - TESTING
 def log_redis_operation(operation, key, result=None):
     print(f"REDIS {operation}: {key} => {result}")
 
@@ -156,7 +168,7 @@ def get_conversation(session_id):
     """Get conversation from Redis"""
     key = f"conversation:{session_id}"
     data = redis_client.get(key)
-    log_redis_operation("GET", key, "Found" if data else "Not found")
+    log_redis_operation("GET", key, "Found" if data else "Not found") # TESTING
     if data:
         # Extend TTL on access
         redis_client.expire(key, redis_ttl)
@@ -167,7 +179,7 @@ def save_conversation(session_id, conversation):
     """Save conversation to Redis with TTL"""
     redis_client.setex(
         f"conversation:{session_id}", 
-        redis_ttl,  # 30-minute TTL
+        redis_ttl,  # 2 hours TTL
         json.dumps(conversation)
     )
 
@@ -227,12 +239,12 @@ def generate():
     if not prompt:
         return jsonify({'error': 'No prompt provided'}), 400
     
-    # Session handling - more robust validation
+    # Session handling - more robust validation 
     if not session_id:
         session_id = str(uuid.uuid4())
-        print(f"\n🔥 New session created: {session_id}")
-    '''else:
-        print(f"\n🔄 Continuing session: {session_id}")'''
+        print(f"\n🔥 New session created: {session_id}") # Testing
+    else:
+        print(f"\n🔄 Continuing session: {session_id}") # Testing
     
     # Get conversation history from Redis
     conversation = get_conversation(session_id)
@@ -241,7 +253,7 @@ def generate():
     user_message = {"role": "user", "content": prompt}
     conversation.append(user_message)
     
-    # Debug print before API call
+    # Debug print before API call - Testing
     print("\n=== FULL CONVERSATION HISTORY ===")
     for i, msg in enumerate(conversation):
         print(f"{i}. {msg['role'].upper()}: {msg['content']}")
@@ -254,7 +266,7 @@ def generate():
             "stream": False
         }
         
-        print("\n📤 Sending to LLM API:", json.dumps(payload, indent=2))
+        print("\n📤 Sending to LLM API:", json.dumps(payload, indent=2)) # Testing
 
         headers = {
             "Content-Type": "application/json"
@@ -266,7 +278,7 @@ def generate():
         response = requests.post(LLM_API_URL, json=payload, headers=headers)
         response_data = response.json()
         
-        print("\n📥 Received from LLM:", json.dumps(response_data, indent=2))
+        print("\n📥 Received from LLM:", json.dumps(response_data, indent=2)) # Testing
 
         if response.status_code == 200:
             assistant_reply = response_data.get('message', {}).get('content', '').strip()
@@ -277,7 +289,7 @@ def generate():
 
             save_conversation(session_id, conversation)
             
-            print("\n💾 Updated conversation context:")
+            print("\n💾 Updated conversation context:") # Testing
             for i, msg in enumerate(conversation):
                 print(f"{i}. {msg['role'].upper()}: {msg['content']}")
             

@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isValid = await verifySession(savedSessionId);
         if (isValid) {
             currentSessionId = savedSessionId;
-            console.log('Resumed previous session:', currentSessionId);
+            console.log('Resumed session:', currentSessionId);
         } else {
             // Session not found on server (expired or server restarted)
             sessionStorage.removeItem('llm_session_id');

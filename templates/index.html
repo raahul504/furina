@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
+
+    <!-- Night Mode Support -->
+    <link rel="stylesheet" href="static/night-mode.css">
+    <script src="static/night-mode.js" defer></script> <!--night mode glitch solution pasted in night-mode.js-->
+    
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -34,10 +39,16 @@
         </div>
     </div>
 
-    <!-- Text-to-Speech Toggle -->
-    <div id="tts-toggle">
-        <input type="checkbox" id="auto-tts" /> 
-        <label for="auto-tts">Auto Speak</label>
+    <!-- Voice Settings Container - Single container with both controls -->
+    <div class="voice-container">
+        <!-- Auto Speak Toggle -->
+        <div class="auto-speak-container">
+            <input type="checkbox" id="auto-tts" /> 
+            <label for="auto-tts">Auto Speak</label>
+        </div>
+        
+        <!-- Voice Selector will be added here by JS -->
+        <div id="voice-settings" class="voice-selector-container"></div>
     </div>
 
     <!-- Status Display -->
@@ -72,6 +83,8 @@
             <p>Your life matters ❤️ Please reach out.</p>
         </div>
     </div>
+
+    <script src="static/music-player.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,221 @@
+/* Night Mode Styles */
+body {
+    transition: background-image 1s ease-in-out, color 0.5s ease;
+}
+
+/* Preload night mode class - applied before DOM loads, no transition */
+.preload-night-mode {
+    color-scheme: dark;
+}
+
+.preload-night-mode body {
+    background-image: url("background4.jpg") !important; /* Starry night background */
+    color: #e0e0e0;
+    transition: none !important; /* Disable transitions for initial load */
+}
+
+/* Remove the old night mode button styles since we're using inline styles */
+.night-mode-btn {
+    display: none;
+}
+
+/* Night Mode Theme */
+body.night-mode {
+    background-image: url("background4.jpg") !important; /* Starry night background */
+    color: #e0e0e0;
+}
+
+/* Adjust text colors for night mode */
+body.night-mode h1,
+.preload-night-mode body h1 {
+    color: #a0d8ff; /* Lighter blue for headings */
+    text-shadow: 0 0 10px rgba(160, 216, 255, 0.5); /* Add subtle glow effect */
+}
+
+body.night-mode .navbar a,
+.preload-night-mode body .navbar a {
+    color: #a0d8ff; /* Lighter blue for nav links */
+}
+
+body.night-mode .navbar a:hover,
+.preload-night-mode body .navbar a:hover {
+    color: #e49c4b; /* Keep same hover color */
+}
+
+/* Fix for music navigation button */
+body.night-mode .nav-music-btn,
+.preload-night-mode body .nav-music-btn {
+    color: #a0d8ff !important; /* Match navbar links */
+}
+
+body.night-mode .nav-music-btn:hover,
+.preload-night-mode body .nav-music-btn:hover {
+    color: #e49c4b !important; /* Match navbar hover */
+}
+
+/* Enhanced Music dropdown in night mode */
+body.night-mode .music-dropdown-panel,
+.preload-night-mode body .music-dropdown-panel {
+    background-color: rgba(30, 30, 50, 0.8);
+    border: 1px solid rgba(160, 216, 255, 0.3);
+}
+
+body.night-mode .song-item,
+.preload-night-mode body .song-item {
+    border-bottom: 1px solid rgba(160, 216, 255, 0.2);
+}
+
+body.night-mode .song-item:hover,
+.preload-night-mode body .song-item:hover {
+    background-color: rgba(160, 216, 255, 0.15);
+}
+
+body.night-mode .now-playing,
+.preload-night-mode body .now-playing {
+    background-color: rgba(160, 216, 255, 0.25);
+}
+
+/* Adjust chat container for night mode */
+body.night-mode .chat-container,
+.preload-night-mode body .chat-container {
+    background: rgba(22, 28, 36, 0.7); /* Darker, more neutral background */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(160, 216, 255, 0.2);
+}
+
+/* Adjust message bubbles for night mode - improved colors */
+body.night-mode .user-message,
+.preload-night-mode body .user-message {
+    background-color: rgba(38, 50, 72, 0.8); /* Improved dark blue for user messages */
+    color: #e6f0ff;
+    border-left: 3px solid #6a9ed8;
+}
+
+body.night-mode .bot-message,
+.preload-night-mode body .bot-message {
+    background-color:#5e8db1; /* Improved dark purple for bot messages */
+    color: #f2e6ff;
+    border-left: 3px solid #a0d8ff;
+}
+
+/* Speech buttons in dark mode */
+body.night-mode .speech-button,
+.preload-night-mode body .speech-button {
+    background-color: rgba(160, 216, 255, 0.15);
+    color: #e0e0e0;
+}
+
+body.night-mode .speech-button:hover,
+.preload-night-mode body .speech-button:hover {
+    background-color: rgba(160, 216, 255, 0.3);
+}
+
+/* Input field in night mode */
+body.night-mode #user-input,
+.preload-night-mode body #user-input {
+    background: rgba(28, 32, 45, 0.6);
+    border-color: rgba(160, 216, 255, 0.3);
+    color: #e0e0e0;
+}
+
+body.night-mode #user-input::placeholder,
+.preload-night-mode body #user-input::placeholder {
+    color: rgba(200, 200, 255, 0.6);
+}
+
+body.night-mode #user-input:focus,
+.preload-night-mode body #user-input:focus {
+    border-color: #6a9ed8;
+    background: rgba(30, 30, 50, 0.7);
+    box-shadow: 0 0 5px rgba(160, 216, 255, 0.3);
+}
+
+/* Buttons in night mode */
+body.night-mode .input-area button,
+.preload-night-mode body .input-area button {
+    background: rgba(38, 50, 72, 0.7);
+    color: #e0e0e0;
+}
+
+body.night-mode .input-area button:hover,
+.preload-night-mode body .input-area button:hover {
+    background: rgba(38, 50, 72, 0.9);
+}
+
+/* Containers in night mode */
+body.night-mode .counselling-description,
+body.night-mode .therapist,
+body.night-mode .about-container,
+.preload-night-mode body .counselling-description,
+.preload-night-mode body .therapist,
+.preload-night-mode body .about-container {
+    background: rgba(22, 28, 36, 0.8);
+    color: #e0e0e0;
+    border: 1px solid rgba(160, 216, 255, 0.2);
+}
+
+/* Voice settings in night mode */
+body.night-mode .voice-container,
+.preload-night-mode body .voice-container {
+    background: rgba(30, 35, 50, 0.7);
+    border: 1px solid rgba(160, 216, 255, 0.2);
+}
+
+/* Voice selector in night mode */
+body.night-mode .voice-selector-container select,
+.preload-night-mode body .voice-selector-container select {
+    background: rgba(38, 50, 72, 0.8);
+    border-color: rgba(160, 216, 255, 0.3);
+}
+
+/* Auto TTS toggle in night mode */
+body.night-mode #auto-tts,
+.preload-night-mode body #auto-tts {
+    accent-color: #a0d8ff;
+}
+
+/* Quiz button in night mode */
+body.night-mode .quiz-floating-btn,
+.preload-night-mode body .quiz-floating-btn {
+    background: linear-gradient(145deg, rgba(45, 37, 62, 0.8), rgba(38, 50, 72, 0.8));
+    color: #e0e0e0;
+    border: 1px solid rgba(160, 216, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.night-mode .quiz-floating-btn:hover,
+.preload-night-mode body .quiz-floating-btn:hover {
+    background: linear-gradient(145deg, rgba(52, 43, 71, 0.9), rgba(44, 58, 84, 0.9));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Quiz modal in night mode */
+body.night-mode .quiz-modal .quiz-container,
+.preload-night-mode body .quiz-modal .quiz-container {
+    background: rgba(22, 28, 36, 0.95);
+    color: #e0e0e0;
+    border: 1px solid rgba(160, 216, 255, 0.3);
+}
+
+body.night-mode .quiz-header,
+.preload-night-mode body .quiz-header {
+    border-bottom: 1px solid rgba(160, 216, 255, 0.2);
+}
+
+body.night-mode .quiz-header h2,
+.preload-night-mode body .quiz-header h2 {
+    color: #a0d8ff;
+}
+
+body.night-mode .progress-bar,
+.preload-night-mode body .progress-bar {
+    background-color: rgba(160, 216, 255, 0.7);
+}
+
+/* Style for the night mode toggle button when in dark mode */
+body.night-mode #nightModeToggle,
+.preload-night-mode body #nightModeToggle {
+    background: rgba(38, 50, 72, 0.8);
+    border: 1px solid rgba(160, 216, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
