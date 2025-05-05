@@ -15,6 +15,53 @@ let currentUtterance = null;
 let voices = [];
 let selectedVoice = null;
 
+window.addEventListener("load", async () => {
+    await Clerk.load();
+  
+    const authContainer = document.getElementById("auth-button");
+    const adminButtonContainer = document.getElementById("admin-buttons");
+  
+    if (Clerk.user) {
+      const userButton = document.createElement("clerk-user-button");
+      userButton.setAttribute("appearance", JSON.stringify({
+        baseTheme: 'light',
+        layout: {
+          logoPlacement: 'none'
+        }
+      }));
+      authContainer.innerHTML = '';
+      Clerk.mountUserButton(authContainer);
+
+      const email = Clerk.user.primaryEmailAddress.emailAddress;
+    const isAdmin = (email === "raahul.cg10@gmail.com");
+
+    if (isAdmin) {
+      // Dynamically create buttons (they won’t exist in DOM for others)
+      const btn1 = document.createElement("button");
+      btn1.textContent = "Register Therapist";
+      btn1.onclick = () => {
+        window.location.href = "/register";
+      };
+
+      const btn2 = document.createElement("button");
+      btn2.textContent = "Unregister Therapist";
+      btn2.onclick = () => {
+        unregisterTherapist();
+      };
+
+      adminButtonContainer.appendChild(btn1);
+      adminButtonContainer.appendChild(btn2);
+    }
+
+    } else {
+      authContainer.innerHTML = `
+        <a href="https://dear-worm-95.accounts.dev/sign-in?redirect_url=${window.location.href}">
+          <button>Sign In</button>
+        </a>
+      `;
+    }
+  });
+
 // Initialize Speech Recognition
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -71,54 +118,6 @@ function initVoices() {
         }
     }
 }
-
-/* Create voice selector (old one, does not work with new UI)
-function createVoiceSelector() {
-    const ttsContainer = document.getElementById('tts-toggle');
-    
-    // Create selector container
-    const selectorContainer = document.createElement('div');
-    selectorContainer.style.marginLeft = '20px';
-    selectorContainer.style.display = 'flex';
-    selectorContainer.style.alignItems = 'center';
-    selectorContainer.style.color = '';
-    
-    // Create label
-    const label = document.createElement('label');
-    label.textContent = 'Voice: ';
-    label.style.marginRight = '5px';
-    
-    // Create select element
-    const selector = document.createElement('select');
-    selector.id = 'voice-selector';
-    selector.style.padding = '5px';
-    selector.style.borderRadius = '4px';
-    
-    // Add voices to selector
-    voices.forEach(voice => {
-        const option = document.createElement('option');
-        option.value = voice.name;
-        option.textContent = `${voice.name} (${voice.lang})`;
-        selector.appendChild(option);
-    });
-    
-    // Set initial value if selected voice exists
-    if (selectedVoice) {
-        selector.value = selectedVoice.name;
-    }
-    
-    // Add change event listener
-    selector.addEventListener('change', function() {
-        selectedVoice = voices.find(voice => voice.name === this.value);
-    });
-    
-    // Add elements to container
-    selectorContainer.appendChild(label);
-    selectorContainer.appendChild(selector);
-    
-    // Add container to TTS container
-    ttsContainer.appendChild(selectorContainer);
-}*/
 
 // Create voice selector for new UI
 function createVoiceSelector() {

@@ -39,6 +39,9 @@ app = Flask(__name__)
 LLM_API_URL = "https://ra.furina-tunnel.space/api/chat" # Ollama API endpoint through cloudlfare tunnel
 LLM_API_KEY = None  # Add your API key if required
 
+CLERK_API_KEY = os.environ.get("CLERK_API_KEY")
+CLERK_FRONTEND_API = os.environ.get("CLERK_FRONTEND_API")
+
 @app.route("/")
 def home():
     return render_template("index.html")
