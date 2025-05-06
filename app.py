@@ -41,6 +41,7 @@ LLM_API_KEY = None  # Add your API key if required
 
 CLERK_API_KEY = os.environ.get("CLERK_API_KEY")
 CLERK_FRONTEND_API = os.environ.get("CLERK_FRONTEND_API")
+VITE_CLERK_PUBLISHABLE_KEY = os.environ.get("VITE_CLERK_PUBLISHABLE_KEY")
 
 @app.route("/")
 def home():

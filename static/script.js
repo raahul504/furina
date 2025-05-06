@@ -23,7 +23,10 @@ window.addEventListener("load", async () => {
     const authContainer = document.getElementById("auth-button");
     const adminButtonContainer = document.getElementById("admin-buttons");
   
-    if (Clerk.user) {
+    Clerk.addListener("user", async () => {
+        const user = Clerk.user;
+
+    if (user) {
       const userButton = document.createElement("clerk-user-button");
       userButton.setAttribute("appearance", JSON.stringify({
         baseTheme: 'light',
@@ -34,7 +37,7 @@ window.addEventListener("load", async () => {
       authContainer.innerHTML = '';
       Clerk.mountUserButton(authContainer);
 
-      const email = Clerk.user.primaryEmailAddress.emailAddress;
+    const email = Clerk.user.primaryEmailAddress.emailAddress;
     const isAdmin = (email === "raahul.cg10@gmail.com");
 
     if (isAdmin) {
@@ -62,6 +65,7 @@ window.addEventListener("load", async () => {
         </a>`;
     }
   });
+});
 
 // Initialize Speech Recognition
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
