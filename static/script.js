@@ -1,5 +1,3 @@
-import { useSignIn } from "@clerk/clerk-js";
-
 // DOM Elements
 const chatMessages = document.getElementById('chat-messages');
 const userInput = document.getElementById('user-input');
