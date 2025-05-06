@@ -1,3 +1,5 @@
+import { useSignIn } from "@clerk/clerk-js";
+
 // DOM Elements
 const chatMessages = document.getElementById('chat-messages');
 const userInput = document.getElementById('user-input');
@@ -17,6 +19,9 @@ let selectedVoice = null;
 
 window.addEventListener("load", async () => {
     await Clerk.load();
+    await Clerk.loadUser();
+
+    Clerk.addListener("auth:change", () => location.reload());
   
     const authContainer = document.getElementById("auth-button");
     const adminButtonContainer = document.getElementById("admin-buttons");
@@ -55,10 +60,9 @@ window.addEventListener("load", async () => {
 
     } else {
       authContainer.innerHTML = `
-        <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=${window.location.href}">
+        <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=https://furina-0zow.onrender.com/">
           <button>Sign In</button>
-        </a>
-      `;
+        </a>`;
     }
   });
 
