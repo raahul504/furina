@@ -19,8 +19,8 @@
     <script
         async
         crossorigin="anonymous"
-        data-clerk-publishable-key="pk_test_ZGVhci13b3JtLTk1LmNsZXJrLmFjY291bnRzLmRldiQ"
-        src="https://dear-worm-95.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        data-clerk-publishable-key="pk_test_ZGV2b3RlZC1sb2N1c3QtMjIuY2xlcmsuYWNjb3VudHMuZGV2JA"
+        src="https://devoted-locust-22.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
         type="text/javascript">
     </script>
     <script src="static/script.js"></script>
@@ -31,8 +31,7 @@
         <a href="{{ url_for('home') }}">Home</a>
         <a href="{{ url_for('counselling') }}">Counselling</a>
         <a href="{{ url_for('breathe') }}">Breathe</a>
-        <a href="#" class="active">About Us</a>
-        <div id="auth-button"></div>
+        <a href="{{ url_for('about') }}" class="active">About Us</a>
     </div>
 
     <div class="about-container">
