@@ -17,7 +17,6 @@ let selectedVoice = null;
 
 window.addEventListener("load", async () => {
     await Clerk.load();
-    await Clerk.loadUser();
 
     Clerk.addListener("auth:change", () => location.reload());
   

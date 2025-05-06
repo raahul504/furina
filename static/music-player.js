@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add event listener for night mode changes
+    /* Add event listener for night mode changes
     document.addEventListener('DOMNodeInserted', function(e) {
         if (e.target.id === 'nightModeToggle') {
             const nightModeBtn = document.getElementById('nightModeToggle');
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         }
-    });
+    });*/
 
     function updateMusicButtonStyling() {
         const musicBtn = document.querySelector('.nav-music-btn');
