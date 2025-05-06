@@ -18,7 +18,7 @@ let selectedVoice = null;
 window.addEventListener("load", async () => {
     await Clerk.load();
 
-    Clerk.addListener("auth:change", () => location.reload());
+    //Clerk.addListener("auth:change", () => location.reload());
   
     const authContainer = document.getElementById("auth-button");
     const adminButtonContainer = document.getElementById("admin-buttons");
@@ -60,7 +60,7 @@ window.addEventListener("load", async () => {
 
     } else {
       authContainer.innerHTML = `
-        <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=https://furina-0zow.onrender.com/">
+        <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=${window.location.href}">
           <button>Sign In</button>
         </a>`;
     }
