@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(err => console.error('Error loading music:', err));
 
 
-    // Use localStorage to persist audio state between pages
-    let currentSongIndex = localStorage.getItem('currentSongIndex') ? parseInt(localStorage.getItem('currentSongIndex')) : -1;
-    let isPlaying = localStorage.getItem('isPlaying') === 'true';
-    let currentTime = localStorage.getItem('currentTime') ? parseFloat(localStorage.getItem('currentTime')) : 0;
+    // Use sessionStorage to persist audio state between pages
+    let currentSongIndex = sessionStorage.getItem('currentSongIndex') ? parseInt(sessionStorage.getItem('currentSongIndex')) : -1;
+    let isPlaying = sessionStorage.getItem('isPlaying') === 'true';
+    let currentTime = sessionStorage.getItem('currentTime') ? parseFloat(sessionStorage.getItem('currentTime')) : 0;
     
     // Create audio element
     const audioPlayer = new Audio();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             audioPlayer.play().catch(error => {
                 console.error("Playback failed:", error);
                 isPlaying = false;
-                localStorage.setItem('isPlaying', 'false');
+                sessionStorage.setItem('isPlaying', 'false');
             });
         }
     }
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // If clicking on currently playing song, pause it
             audioPlayer.pause();
             isPlaying = false;
-            localStorage.setItem('isPlaying', 'false');
+            sessionStorage.setItem('isPlaying', 'false');
         } else {
             // Otherwise play the selected song
             if (currentSongIndex === index) {
@@ -181,18 +181,18 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // Play a new song
                 currentSongIndex = index;
-                localStorage.setItem('currentSongIndex', index);
+                sessionStorage.setItem('currentSongIndex', index);
                 audioPlayer.src = songs[currentSongIndex].file;
                 audioPlayer.play().catch(error => {
                     console.error("Playback failed:", error);
                     alert(`Sorry, "${songs[index].title}" is not available. The music files need to be added to your project.`);
                     isPlaying = false;
-                    localStorage.setItem('isPlaying', 'false');
+                    sessionStorage.setItem('isPlaying', 'false');
                     return;
                 });
             }
             isPlaying = true;
-            localStorage.setItem('isPlaying', 'true');
+            sessionStorage.setItem('isPlaying', 'true');
         }
         updatePlaybackUI();
     }
@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Store current time periodically for resuming playback
     audioPlayer.addEventListener('timeupdate', function() {
         if (isPlaying) {
-            localStorage.setItem('currentTime', audioPlayer.currentTime);
+            sessionStorage.setItem('currentTime', audioPlayer.currentTime);
         }
     });
 
@@ -229,30 +229,30 @@ document.addEventListener('DOMContentLoaded', function() {
         let newIndex = currentSongIndex + 1;
         if (newIndex >= songs.length) newIndex = 0;
         currentSongIndex = newIndex;
-        localStorage.setItem('currentSongIndex', newIndex);
+        sessionStorage.setItem('currentSongIndex', newIndex);
         audioPlayer.src = songs[currentSongIndex].file;
         audioPlayer.play().catch(error => {
             console.error("Playback failed:", error);
             isPlaying = false;
-            localStorage.setItem('isPlaying', 'false');
+            sessionStorage.setItem('isPlaying', 'false');
         });
         updatePlaybackUI();
     }
 
-    // Add global keyboard shortcut to stop audio
+    /* Add global keyboard shortcut to stop audio
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && isPlaying) {
             audioPlayer.pause();
             isPlaying = false;
-            localStorage.setItem('isPlaying', 'false');
+            sessionStorage.setItem('isPlaying', 'false');
             updatePlaybackUI();
         }
-    });
+    });*/
     
     // Handle page unload
     window.addEventListener('beforeunload', function() {
         if (isPlaying) {
-            localStorage.setItem('currentTime', audioPlayer.currentTime);
+            sessionStorage.setItem('currentTime', audioPlayer.currentTime);
         }
     });
 });
