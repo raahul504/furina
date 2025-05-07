@@ -83,7 +83,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         stopRecording();
     };
 } else {
-    //micButton.disabled = true;
+    micButton.disabled = true;
     micButton.title = "Speech recognition not supported in your browser";
 }
 

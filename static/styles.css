@@ -203,14 +203,6 @@ h1 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Registration Button */
-#reg-button {
-    background: linear-gradient(135deg, #75b8ee, #6a9ed8);
-}
-#reg-button:hover {
-    background: linear-gradient(135deg, #8ec5f5, #7baee8);
-}
-
 /* Microphone Button */
 #mic-button {
     background: linear-gradient(135deg, #75b8ee, #6a9ed8);
