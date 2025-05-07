@@ -1,6 +1,6 @@
 /* Night Mode Styles */
 body {
-    transition: background-image 1s ease-in-out, color 0.5s ease;
+    transition: background-image 0.5s ease-in-out, color 0.5s ease;
 }
 
 /* Preload night mode class - applied before DOM loads, no transition */
