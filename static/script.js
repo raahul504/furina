@@ -17,16 +17,11 @@ let selectedVoice = null;
 
 window.addEventListener("load", async () => {
     await Clerk.load();
-
-    //Clerk.addListener("auth:change", () => location.reload());
   
     const authContainer = document.getElementById("auth-button");
     const adminButtonContainer = document.getElementById("admin-buttons");
   
-    Clerk.addListener("user", async () => {
-        const user = Clerk.user;
-
-    if (user) {
+    if (Clerk.user) {
       const userButton = document.createElement("clerk-user-button");
       userButton.setAttribute("appearance", JSON.stringify({
         baseTheme: 'light',
@@ -37,7 +32,7 @@ window.addEventListener("load", async () => {
       authContainer.innerHTML = '';
       Clerk.mountUserButton(authContainer);
 
-    const email = Clerk.user.primaryEmailAddress.emailAddress;
+      const email = Clerk.user.primaryEmailAddress.emailAddress;
     const isAdmin = (email === "raahul.cg10@gmail.com");
 
     if (isAdmin) {
@@ -62,10 +57,10 @@ window.addEventListener("load", async () => {
       authContainer.innerHTML = `
         <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=${window.location.href}">
           <button>Sign In</button>
-        </a>`;
+        </a>
+      `;
     }
   });
-});
 
 // Initialize Speech Recognition
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
