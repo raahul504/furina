@@ -55,7 +55,7 @@ window.addEventListener("load", async () => {
 
     } else {
       authContainer.innerHTML = `
-        <a href="https://devoted-locust-22.accounts.dev/sign-in?redirect_url=${window.location.href}">
+        <a href="https://accounts.furinacompanion.site/sign-in?redirect_url=${window.location.href}">
           <button>Sign In</button>
         </a>
       `;
