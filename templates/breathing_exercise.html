@@ -3,17 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/night-mode.css">
-    <script src="static/night-mode.js" defer></script>
-    <script>
-        // Apply night mode preference immediately
-        (function() {
-            const isDarkMode = localStorage.getItem('nightMode') === 'true';
-            if (isDarkMode) {
-                document.documentElement.classList.add('preload-night-mode');
-            }
-        })();
-    </script>
     <script
         async
         crossorigin="anonymous"
@@ -37,6 +26,9 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .navbar {
             position: absolute;
@@ -102,6 +94,17 @@
             background: #fef0c8;
         }
     </style>
+    <link rel="stylesheet" href="static/night-mode.css">
+    <script src="static/night-mode.js" defer></script>
+    <script>
+        // Apply night mode preference immediately
+        (function() {
+            const isDarkMode = localStorage.getItem('nightMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('preload-night-mode');
+            }
+        })();
+    </script>
 </head>
 <body>
     <div class="navbar">

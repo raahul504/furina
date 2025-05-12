@@ -208,7 +208,7 @@ function speakText(text) {
         return; // Exit if we were already speaking (this makes the button toggle)
     }
 
-    text = text.replace(/[🔊⏹️*_`~]/g, '').trim();
+    text = text.replace(/[🔊⏹️⚠️🌎💙*_`~]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Set the selected voice if available
