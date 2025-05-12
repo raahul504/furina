@@ -31,7 +31,6 @@ function createNightModeToggle() {
     nightModeBtn.style.bottom = '20px';
     nightModeBtn.style.right = '20px';
     nightModeBtn.style.zIndex = '9999';
-    nightModeBtn.style.background = 'rgba(0,0,0,0.5)';
     nightModeBtn.style.color = 'white';
     nightModeBtn.style.border = 'none';
     nightModeBtn.style.borderRadius = '8px';

@@ -475,16 +475,20 @@ input:focus {
 }
 
 .safety-alert {
-    background-color: #fff0f0;
-    border-left: 5px solid #ff4d4d;
-    padding: 20px;
-    height: 310px;
-    margin: 60px 0;
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    width: 90%;
     max-width: 685px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 0 8px 8px 0;
-    position: relative;
+    background-color: #fff0f0;
+    border-left: 7px solid #ff4d4d;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 10000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    z-index: 10001;
 }
 .emergency-button {
     background-color: #ff4d4d;
@@ -502,6 +506,16 @@ input:focus {
     border: 2px solid #ff4d4d !important;
     background-color: #fff0f0 !important;
     color: #1e1e1e !important;
+}
+#emergency-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+    z-index: 10000;
+    display: none;
 }
 
 /* Music Navigation Button */

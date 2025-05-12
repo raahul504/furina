@@ -323,17 +323,21 @@ Your life matters deeply.`
 // Helper functions
 function showEmergencyResources() {
     const panel = document.getElementById('emergency-resources');
-    if (panel) panel.style.display = 'block';
-    
-    // Auto-scroll to make visible
-    panel?.scrollIntoView({ behavior: 'smooth' });
+    const overlay = document.getElementById('emergency-overlay');
+    if (panel && overlay){
+        panel.style.display = 'block';
+        overlay.style.display = 'block';
+    }
 }
 
 function hideEmergencyResources() {
-    safetyWarningCount = 0;
-    // Optional: Hide or tone down the alerts
+    //safetyWarningCount = 0; // Optional: Hide or tone down the alerts
     const panel = document.getElementById('emergency-resources');
-    if (panel) panel.style.display = 'none';
+    const overlay = document.getElementById('emergency-overlay');
+    if (panel && overlay){
+        panel.style.display = 'none';
+        overlay.style.display = 'none';
+    }
 }
 
 // Add session ID tracking
