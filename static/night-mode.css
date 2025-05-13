@@ -158,15 +158,15 @@ body.night-mode .about-container,
 }
 
 /* Voice settings in night mode */
-body.night-mode .voice-container,
-.preload-night-mode body .voice-container {
+body.night-mode .voice-container, .controls-container,
+.preload-night-mode body .voice-container, .controls-container {
     background: rgba(30, 35, 50, 0.7);
     border: 1px solid rgba(160, 216, 255, 0.2);
 }
 
 /* Voice selector in night mode */
-body.night-mode .voice-selector-container select,
-.preload-night-mode body .voice-selector-container select {
+body.night-mode .voice-selector-container select, .time-selector-container select,
+.preload-night-mode body .voice-selector-container select, .time-selector-container select {
     background: rgba(38, 50, 72, 0.8);
     border-color: rgba(160, 216, 255, 0.3);
 }
