@@ -12,7 +12,8 @@
         src="https://clerk.furinacompanion.site/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
         type="text/javascript">
     </script>
-    
+    <link rel="stylesheet" href="static/quiz-styles.css">
+
     <!-- Night Mode Support -->
     <link rel="stylesheet" href="static/night-mode.css">
     <script src="static/night-mode.js" defer></script> <!--night mode glitch solution pasted in night-mode.js-->
@@ -99,6 +100,31 @@
             <p>Your life matters ❤️ Please reach out.</p>
         </div>
     </div>
+
+    <div class="quiz-floating-btn" onclick="quizModule.openQuiz()">Mental Health Assessment</div>
+    
+    <!-- Quiz Modal with improved structure -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h2>Mental Health Assessment</h2>
+                <span class="close-btn" onclick="quizModule.closeQuiz()">&times;</span>
+            </div>
+            <div class="quiz-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="quiz-content" id="quizContent">
+                <!-- Questions will be inserted here by JavaScript -->
+            </div>
+            <div class="email-section" id="emailSection" style="display: none;">
+                <h3>Complete Your Assessment</h3>
+                <p>Enter your email to receive detailed results and personalized recommendations.</p>
+                <input type="email" id="userEmail" placeholder="Enter your email" required>
+                <button onclick="quizModule.submitQuiz()">Get My Results</button>
+            </div>
+        </div>
+    </div>
+    <script src="static/quiz.js"></script>
 
     <script src="static/music-player.js"></script>
     <script src="static/script.js" defer></script>

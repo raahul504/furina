@@ -34,7 +34,7 @@ function createNightModeToggle() {
     nightModeBtn.style.color = 'white';
     nightModeBtn.style.border = 'none';
     nightModeBtn.style.borderRadius = '8px';
-    nightModeBtn.style.padding = '10px 15px';
+    nightModeBtn.style.padding = '15px 15px';
     nightModeBtn.style.cursor = 'pointer';
     nightModeBtn.style.fontSize = '14px';
     

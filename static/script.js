@@ -38,12 +38,14 @@ window.addEventListener("load", async () => {
     if (isAdmin) {
       // Dynamically create buttons (they won’t exist in DOM for others)
       const btn1 = document.createElement("button");
+      btn1.style.color = " #e49c4b";
       btn1.textContent = "Register Therapist";
       btn1.onclick = () => {
         window.location.href = "/register";
       };
 
       const btn2 = document.createElement("button");
+      btn2.style.color = " #e49c4b";
       btn2.textContent = "Unregister Therapist";
       btn2.onclick = () => {
         unregisterTherapist();

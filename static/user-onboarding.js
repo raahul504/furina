@@ -48,13 +48,6 @@ const onboardingTour = (function() {
             position: 'left',
             highlightType: 'standard'
         },
-        /*{
-            element: '.input-area',
-            title: 'Send Messages',
-            content: 'Type your messages here and press send or use the microphone button for voice input.',
-            position: 'top',
-            highlightType: 'standard'
-        },*/
         {
             element: '.voice-container',
             title: 'Voice Settings',
@@ -62,13 +55,6 @@ const onboardingTour = (function() {
             position: 'top',
             highlightType: 'standard'
         },
-        /*{
-            element: '.navbar a:first-child',
-            title: 'Home',
-            content: 'Return to the main chat interface anytime from anywhere in the app.',
-            position: 'bottom',
-            highlightType: 'pointer'
-        },*/
         {
             element: '.navbar a[href*="counselling"]',
             title: 'Professional Support',
@@ -97,28 +83,6 @@ const onboardingTour = (function() {
             position: 'left',
             highlightType: 'standard'
         },
-        /*{
-            element: '#nightModeToggle',
-            title: 'Night Mode',
-            content: 'Toggle between light and dark mode to reduce eye strain and customize your experience.',
-            position: 'left',
-            highlightType: 'standard',
-            preventAction: true // Prevent the night mode toggle from changing during the tour
-        },
-        {
-            element: '.navbar a[href*="about"]',
-            title: 'About Us',
-            content: 'Learn more about Furina Companion, our mission, and the team behind it.',
-            position: 'bottom',
-            highlightType: 'pointer'
-        },
-        {
-            element: '#help-link', 
-            title: 'Restart Tour',
-            content: 'Click here anytime to see this guide again if you need a refresher on app features.',
-            position: 'left',
-            highlightType: 'standard'
-        }*/
     ];
 
     // HTML structure for the tour overlay
