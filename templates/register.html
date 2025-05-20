@@ -43,9 +43,6 @@
         <label for="experience">Years of Experience:</label>
         <input type="number" id="experience" name="experience" required>
         
-        <label for="license_number">License Number:</label>
-        <input type="text" id="license_number" name="license_number" required>
-        
         <label for="languages">Languages Spoken (comma-separated):</label>
         <input type="text" id="languages" name="languages" required>
         
@@ -65,7 +62,6 @@
             formData.append("phone", document.getElementById("phone").value);
             formData.append("specialization", document.getElementById("specialization").value);
             formData.append("experience", document.getElementById("experience").value);
-            formData.append("license_number", document.getElementById("license_number").value);
             formData.append("languages", document.getElementById("languages").value);
             
             const photoInput = document.getElementById("photo");
