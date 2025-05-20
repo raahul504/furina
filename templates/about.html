@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
-    <!--<link rel="stylesheet" href="static/quiz-styles.css">-->
+    <script
+        async
+        crossorigin="anonymous"
+        data-clerk-publishable-key="pk_live_Y2xlcmsuZnVyaW5hY29tcGFuaW9uLnNpdGUk"
+        src="https://clerk.furinacompanion.site/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+        type="text/javascript">
+    </script>
     <!-- Night Mode Support -->
     <script>
         // Apply night mode preference immediately
@@ -345,7 +351,7 @@
         <a href="{{ url_for('counselling') }}">Counselling</a>
         <a href="{{ url_for('breathe') }}">Breathe</a>
         <a href="{{ url_for('about') }}">About Us</a>
-        <a href="#" id="help-link" onclick="onboardingTour.start()">Help</a>
+        <div id="auth-button"></div>
     </div>
 
     <h1>FURINA</h1>
@@ -458,25 +464,6 @@
                 </a>
             </div>
             
-            <!--<div class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your name">
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your email address">
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="4" placeholder="How can we help you?"></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">Send Message</button>
-            </div>-->
-            
             <div class="contact-info">
                 <p>Or email us directly at: <a href="mailto:support@furinacompanion.com">support@furinacompanion.com</a></p>
                 <p>Phone: <a href="tel:+91 9980127149">+91 9980127149</a> | <a href="tel:+91 7676107886">+91 7676107886</a></p>
@@ -505,27 +492,6 @@
                     item.classList.toggle('active');
                 });
             });
-            
-            /* Contact Form Submission
-            const contactForm = document.querySelector('.contact-form');
-            
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const message = document.getElementById('message').value;
-                    
-                    if (name && email && message) {
-                        // Here you would normally send the data to your server
-                        alert(`Thank you, ${name}! Your message has been sent. We'll get back to you soon.`);
-                        contactForm.reset();
-                    } else {
-                        alert('Please fill in all fields.');
-                    }
-                });
-            }*/
         });
     </script>
 
