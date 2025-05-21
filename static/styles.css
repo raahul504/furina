@@ -315,7 +315,7 @@ button:hover {
 
 .therapist {
     width: 95%; /* Reduced width */
-    max-height: 350px;
+    max-height: 400px;
     max-width: 400px; /* Smaller block */
     padding: 15px; /* Reduced padding */
     border-radius: 12px;
@@ -423,7 +423,7 @@ form {
     border-radius: 12px;
     backdrop-filter: blur(15px); /* Increased blur effect */
     max-width: 420px;
-    margin: 50px auto; /* Adds space above */
+    margin: 90px auto; /* Adds space above */
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out; /* Smooth transition */
 }
@@ -442,8 +442,8 @@ input:focus {
     box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
 }
 .register-btn {
-    padding: 8px 14px; /* Smaller button */
-    background-color: #007BFF;
+    padding: 10px 16px; /* Smaller button */
+    background-color: #6b5aff;
     color: white;
     border: none;
     border-radius: 8px;
@@ -455,7 +455,7 @@ input:focus {
     display: block; /* Ensures centering */
 }
 .register-btn:hover {
-    background-color: #0056b3;
+    background-color: #e49c4b;
     transform: scale(1.05);
 }
 

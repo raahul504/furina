@@ -28,28 +28,23 @@
     <h1>Register as a Therapist</h1>
     
     <form id="registration-form" enctype="multipart/form-data">
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" name="name" required>
+        <input style="margin-bottom: 10px;" type="text" id="name" name="name" placeholder="Full Name" required>
         
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input style="margin-bottom: 10px;" type="email" id="email" name="email" placeholder="Email" required>
         
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone" required>
+        <input style="margin-bottom: 10px;" type="text" id="phone" name="phone" placeholder="Phone Number" required>
         
-        <label for="specialization">Specialization (comma-separated):</label>
-        <input type="text" id="specialization" name="specialization" required>
+        <input style="margin-bottom: 10px;" type="text" id="specialization" name="specialization" placeholder="Specialization (comma-separated)" required>
+
+        <input style="margin-bottom: 10px;" type="number" id="experience" name="experience" placeholder="Years of Experience" required>
         
-        <label for="experience">Years of Experience:</label>
-        <input type="number" id="experience" name="experience" required>
+        <input style="margin-bottom: 10px;" type="text" id="languages" name="languages" placeholder="Languages Spoken (comma-separated)" required>
+
+        <input style="margin-bottom: 10px;" type="text" id="availability" name="availability" placeholder="Availability (Online/Offline/Both)" required>
+
+        <input style="margin-bottom: 10px;" type="file" id="photo" name="photo" accept="image/*">
         
-        <label for="languages">Languages Spoken (comma-separated):</label>
-        <input type="text" id="languages" name="languages" required>
-        
-        <label for="photo">Upload Photo:</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
-        
-        <button type="submit">Register</button>
+        <button class="register-btn" type="submit">Register</button>
     </form>
 
     <script>
@@ -63,6 +58,7 @@
             formData.append("specialization", document.getElementById("specialization").value);
             formData.append("experience", document.getElementById("experience").value);
             formData.append("languages", document.getElementById("languages").value);
+            formData.append("availability", document.getElementById("availability").value);
             
             const photoInput = document.getElementById("photo");
             if (photoInput.files.length > 0) {

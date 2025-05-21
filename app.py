@@ -82,8 +82,8 @@ def register():
     phone = request.form.get('phone')
     specialization = request.form.get('specialization')
     experience = request.form.get('experience')
-    license_number = request.form.get('license_number', '')
     languages = request.form.get('languages')
+    availability = request.form.get('availability')
     
     # Handle Photo Upload
     photo = request.files.get('photo')
@@ -102,8 +102,8 @@ def register():
         "phone": phone,
         "specialization": specialization,
         "experience": experience,
-        "license_number": license_number,
         "languages": languages,
+        "availability": availability,
         "photo_path": photo_filename  # Store path instead of direct URL
     }
     db.collection("therapists").add(therapist_data)
