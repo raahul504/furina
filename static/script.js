@@ -14,6 +14,7 @@ let isSpeaking = false;
 let currentUtterance = null;
 let voices = [];
 let selectedVoice = null;
+let isRestoringChat = false;
 
 window.addEventListener("load", async () => {
     await Clerk.load();
@@ -210,7 +211,7 @@ function speakText(text) {
         return; // Exit if we were already speaking (this makes the button toggle)
     }
 
-    text = text.replace(/[🔊⏹️⚠️🌎💙*_`~]/g, '').trim();
+    text = text.replace(/[🔊⏹️⚠️🌎💙*_`~-]/g, '').trim();
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Set the selected voice if available
@@ -392,6 +393,16 @@ function addMessage(content, isUser) {
 
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    // 🛑 Prevent saving during restore
+    if (!isRestoringChat) {
+        saveChatToSession(content, isUser);
+    }
+}
+
+function saveChatToSession(content, isUser) {
+    let history = JSON.parse(sessionStorage.getItem("chatHistory") || "[]");
+    history.push({ content, isUser });
+    sessionStorage.setItem("chatHistory", JSON.stringify(history));
 }
 
 // Add session verification function
@@ -411,7 +422,7 @@ async function verifySession(sessionId) {
     }
 }
 
-// Optional: Load session from sessionStorage on page load
+// Load session and session conversation from sessionStorage on page load
 document.addEventListener('DOMContentLoaded', async () => {
     const savedSessionId = sessionStorage.getItem('llm_session_id');
     if (savedSessionId) {
@@ -426,6 +437,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             currentSessionId = null;
             console.log('Previous session not found on server');
         }
+    }
+    // ✅ Restore chat history from sessionStorage
+    const storedHistory = sessionStorage.getItem("chatHistory");
+    if (storedHistory) {
+        const history = JSON.parse(storedHistory);
+        isRestoringChat = true; // Prevent saving during restore
+        history.forEach(msg => {
+            addMessage(msg.content, msg.isUser);
+        });
+        isRestoringChat = false; // Reset after restoring
     }
 });
 
